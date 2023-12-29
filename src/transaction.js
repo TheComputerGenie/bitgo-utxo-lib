@@ -886,7 +886,7 @@ Transaction.prototype.hashForZcashSignature = function (inIndex, prevOutScript, 
     bufferWriter.writeUInt32(this.locktime)
     bufferWriter.writeUInt32(this.expiryHeight)
     if (this.isSaplingCompatible()) {
-      bufferWriter.writeUInt64(this.valueBalance)
+      bufferWriter.writeInt64(this.valueBalance)
     }
     bufferWriter.writeUInt32(hashType)
 
@@ -1027,6 +1027,7 @@ Transaction.prototype.__toBuffer = function (buffer, initialOffset, __allowWitne
   function writeUInt32 (i) { offset = buffer.writeUInt32LE(i, offset) }
   function writeInt32 (i) { offset = buffer.writeInt32LE(i, offset) }
   function writeUInt64 (i) { offset = bufferutils.writeUInt64LE(buffer, i, offset) }
+  function writeInt64 (i) { offset = bufferutils.writeInt64LE(buffer, i, offset) }
   function writeVarInt (i) {
     varuint.encode(i, buffer, offset)
     offset += varuint.encode.bytes
@@ -1095,7 +1096,7 @@ Transaction.prototype.__toBuffer = function (buffer, initialOffset, __allowWitne
   }
 
   if (this.isSaplingCompatible()) {
-    writeUInt64(this.valueBalance)
+    writeInt64(this.valueBalance)
 
     writeVarInt(this.vShieldedSpend.length)
     this.vShieldedSpend.forEach(function (shieldedSpend) {
